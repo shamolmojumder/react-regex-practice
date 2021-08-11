@@ -42,8 +42,10 @@ function App() {
   return (
     <div>
         <h1>OUR OWN AHUTENTICATION </h1>
-        <p> {`email: ${user.email} & password:${user.password}`} </p>
+        <p> {`name: ${user.name} email: ${user.email} & password:${user.password}`} </p>
         <form onSubmit={handleSubmit} action="">
+        <input type="text" onBlur={handleBlur} name="name" id="" placeholder="your name"/>
+        <br />
         <input type="text" onBlur={handleBlur} name="email" id="" placeholder="email" required/>
         <br />
         <input type="password" onBlur={handleBlur} name="password" id="" placeholder="password" required/>
