@@ -16,6 +16,15 @@ function App() {
   });
   const handleBlur=(e)=>{
     console.log(e.target.value,e.target.name);
+    if (e.target.name==="email") {
+      const isValid=/\S+@\S+\.\S+/.test(e.target.value);
+      console.log(isValid);
+    }
+    if (e.target.name==="password") {
+      // must have at least a number, and at least a special character and 6 to 16 valid character
+      const isPasswordValid=/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(e.target.value)
+      console.log(isPasswordValid);
+    }
   }
   const handleSubmit=()=>{
     console.log("submited");
@@ -31,7 +40,6 @@ function App() {
         <br />
         <input type="submit" value="Submit" />
         </form> 
-       
     </div>    
   );
 }
