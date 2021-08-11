@@ -12,18 +12,28 @@ function App() {
 }
   const [newUser,setNewUser]=useState(false);
   const [user,setuser]=useState({
-    
+    isSignIn:false,
+    name:'',
+    email:'',
+    password:'',
+    photo:''
   });
+  console.log(user);  
   const handleBlur=(e)=>{
-    console.log(e.target.value,e.target.name);
+    // console.log(e.target.value,e.target.name);
+    let isFormValid= true;
     if (e.target.name==="email") {
-      const isValid=/\S+@\S+\.\S+/.test(e.target.value);
-      console.log(isValid);
+      isFormValid=/\S+@\S+\.\S+/.test(e.target.value);
     }
     if (e.target.name==="password") {
       // must have at least a number, and at least a special character and 6 to 16 valid character
-      const isPasswordValid=/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(e.target.value)
-      console.log(isPasswordValid);
+      isFormValid=/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(e.target.value); 
+    }
+    if (isFormValid) {
+      // console.log("all valid");
+    const newUserInfo={...user};
+    newUserInfo[e.target.name]=e.target.value;
+      setuser(newUserInfo)
     }
   }
   const handleSubmit=()=>{
@@ -32,7 +42,7 @@ function App() {
   return (
     <div>
         <h1>OUR OWN AHUTENTICATION </h1>
-
+        <p> {`email: ${user.email} & password:${user.password}`} </p>
         <form onSubmit={handleSubmit} action="">
         <input type="text" onBlur={handleBlur} name="email" id="" placeholder="email" required/>
         <br />
