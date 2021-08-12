@@ -7,56 +7,79 @@ import "firebase/firestore";
 import { useState } from 'react';
 
 function App() {
-  if (firebase.apps.length===0) {
-    firebase.initializeApp(firebaseConfig); 
-}
-  const [newUser,setNewUser]=useState(false);
-  const [user,setuser]=useState({
-    isSignIn:false,
-    name:'',
-    email:'',
-    password:'',
-    photo:''
+  if (firebase.apps.length === 0) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  const [newUser, setNewUser] = useState(false);
+  const [user, setuser] = useState({
+    isSignIn: false,
+    name: '',
+    email: '',
+    password: '',
+    photo: '',
+    success:false,
+    error:''
   });
   // console.log(user);  
-  const handleBlur=(e)=>{
+  const handleBlur = (e) => {
     // console.log(e.target.value,e.target.name);
-    let isFieldValid= true;
-    if (e.target.name==="email") {
-      isFieldValid=/\S+@\S+\.\S+/.test(e.target.value);
+    let isFieldValid = true;
+    if (e.target.name === "email") {
+      isFieldValid = /\S+@\S+\.\S+/.test(e.target.value);
     }
-    if (e.target.name==="password") {
+    if (e.target.name === "password") {
       // must have at least a number, and at least a special character and 6 to 16 valid character
-      isFieldValid=/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(e.target.value); 
+      isFieldValid = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(e.target.value);
     }
     if (isFieldValid) {
       // console.log("all valid");
-    const newUserInfo={...user};
-    newUserInfo[e.target.name]=e.target.value;
-      setuser(newUserInfo)
+      const newUserInfo = { ...user };
+      newUserInfo[e.target.name] = e.target.value;
+      setuser(newUserInfo);
     }
   }
-  const handleSubmit=(e)=>{
+  const handleSubmit = (e) => {
     console.log(user.email, user.password);
     if (user.email && user.password) {
-      console.log("submited");
+      firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+        .then(res => {
+        const newUserInfo={...user};
+          newUserInfo.error='';
+          newUserInfo.success=true;
+          setuser(newUserInfo);
+        })
+        .catch((error) => {
+          const newUserInfo={...user};
+          newUserInfo.error=error.message;
+          newUserInfo.success=false;
+          setuser(newUserInfo);
+          // var errorCode = error.code;
+          // var errorMessage = error.message;
+          // console.log(error);
+          // ..
+        });
+      // console.log("submited");
     }
     e.preventDefault()
   }
   return (
     <div>
-        <h1>OUR OWN AHUTENTICATION </h1>
-        <p> {`name: ${user.name} email: ${user.email} & password:${user.password}`} </p>
-        <form onSubmit={handleSubmit} action="">
-        <input type="text" onBlur={handleBlur} name="name" id="" placeholder="your name"/>
+      <h1>OUR OWN AHUTENTICATION </h1>
+      <p> {`name: ${user.name} email: ${user.email} & password:${user.password}`} </p>
+      <form onSubmit={handleSubmit} action="">
+        <input type="text" onBlur={handleBlur} name="name" id="" placeholder="your name" />
         <br />
-        <input type="text" onBlur={handleBlur} name="email" id="" placeholder="email" required/>
+        <input type="text" onBlur={handleBlur} name="email" id="" placeholder="email" required />
         <br />
-        <input type="password" onBlur={handleBlur} name="password" id="" placeholder="password" required/>
+        <input type="password" onBlur={handleBlur} name="password" id="" placeholder="password" required />
         <br />
         <input type="submit" value="Submit" />
-        </form> 
-    </div>    
+      </form>
+      <p> {user.error} </p>
+      {
+        user.success && <p style={{color:'green'}}> User created successfully </p>
+      }
+    </div>
   );
 }
 
