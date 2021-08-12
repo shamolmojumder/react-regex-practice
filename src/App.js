@@ -18,26 +18,30 @@ function App() {
     password:'',
     photo:''
   });
-  console.log(user);  
+  // console.log(user);  
   const handleBlur=(e)=>{
     // console.log(e.target.value,e.target.name);
-    let isFormValid= true;
+    let isFieldValid= true;
     if (e.target.name==="email") {
-      isFormValid=/\S+@\S+\.\S+/.test(e.target.value);
+      isFieldValid=/\S+@\S+\.\S+/.test(e.target.value);
     }
     if (e.target.name==="password") {
       // must have at least a number, and at least a special character and 6 to 16 valid character
-      isFormValid=/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(e.target.value); 
+      isFieldValid=/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(e.target.value); 
     }
-    if (isFormValid) {
+    if (isFieldValid) {
       // console.log("all valid");
     const newUserInfo={...user};
     newUserInfo[e.target.name]=e.target.value;
       setuser(newUserInfo)
     }
   }
-  const handleSubmit=()=>{
-    console.log("submited");
+  const handleSubmit=(e)=>{
+    console.log(user.email, user.password);
+    if (user.email && user.password) {
+      console.log("submited");
+    }
+    e.preventDefault()
   }
   return (
     <div>
