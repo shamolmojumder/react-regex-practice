@@ -46,13 +46,13 @@ function App() {
         const newUserInfo={...user};
           newUserInfo.error='';
           newUserInfo.success=true;
-          setuser(newUserInfo);
+          setNewUser(newUserInfo);
         })
         .catch((error) => {
           const newUserInfo={...user};
           newUserInfo.error=error.message;
           newUserInfo.success=false;
-          setuser(newUserInfo);
+          setNewUser(newUserInfo);
           // var errorCode = error.code;
           // var errorMessage = error.message;
           // console.log(error);
@@ -77,7 +77,7 @@ function App() {
       </form>
       <p> {user.error} </p>
       {
-        user.success && <p style={{color:'green'}}> User created successfully </p>
+        newUser.success && <p style={{color:'green'}}> User created successfully </p>
       }
     </div>
   );
