@@ -20,6 +20,7 @@ function App() {
     success:false,
     error:''
   });
+  console.log(newUser)
   // console.log(user);  
   const handleBlur = (e) => {
     // console.log(e.target.value,e.target.name);
