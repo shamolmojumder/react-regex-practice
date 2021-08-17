@@ -76,7 +76,7 @@ function App() {
         <br />
         <input type="submit" value="Submit" />
       </form>
-      <p> {user.error} </p>
+      <p> {newUser.error} </p>
       {
         newUser.success && <p style={{color:'green'}}> User created successfully </p>
       }
