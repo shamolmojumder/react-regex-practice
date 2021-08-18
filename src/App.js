@@ -41,19 +41,20 @@ function App() {
   }
   const handleSubmit = (e) => {
     console.log(user.email, user.password);
-    if (user.email && user.password) {
+    if (newUser&& user.email && user.password) {
       firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
         .then(res => {
         const newUserInfo={...user};
           newUserInfo.error='';
           newUserInfo.success=true;
-          setNewUser(newUserInfo);
+          setuser(newUserInfo);
         })
         .catch((error) => {
           const newUserInfo={...user};
           newUserInfo.error=error.message;
           newUserInfo.success=false;
-          setNewUser(newUserInfo);
+          setuser(newUserInfo);
+          // console.log(error);
           // var errorCode = error.code;
           // var errorMessage = error.message;
           // console.log(error);
@@ -61,14 +62,34 @@ function App() {
         });
       // console.log("submited");
     }
+    if (!newUser&& user.email && user.password) {
+      firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+      .then(res => {
+        const newUserInfo={...user};
+        newUserInfo.error='';
+        newUserInfo.success=true;
+        setuser(newUserInfo);
+      })
+      .catch((error) => {
+        const newUserInfo={...user};
+        newUserInfo.error=error.message;
+        newUserInfo.success=false;
+        setuser(newUserInfo);
+      });
+    }
     e.preventDefault()
   }
   return (
     <div>
       <h1>OUR OWN AHUTENTICATION </h1>
+
       <p> {`name: ${user.name} email: ${user.email} & password:${user.password}`} </p>
+        <input onClick={()=>setNewUser(!newUser)} type="checkbox" name="newUser" id="" />
+        <label htmlFor="newUser">New user</label>
       <form onSubmit={handleSubmit} action="">
-        <input type="text" onBlur={handleBlur} name="name" id="" placeholder="your name" />
+       {
+         newUser &&  <input type="text" onBlur={handleBlur} name="name" id="" placeholder="your name" />
+       }
         <br />
         <input type="text" onBlur={handleBlur} name="email" id="" placeholder="email" required />
         <br />
@@ -76,9 +97,9 @@ function App() {
         <br />
         <input type="submit" value="Submit" />
       </form>
-      <p> {newUser.error} </p>
+      <p> {user.error} </p>
       {
-        newUser.success && <p style={{color:'green'}}> User created successfully </p>
+        user.success && <p style={{color:'green'}}> User {newUser ?"created":"loggedin"} successfully </p>
       }
     </div>
   );
